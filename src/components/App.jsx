@@ -9,8 +9,8 @@ export class App extends Component {
   // componentDidMount() {
 
   // }
-  handleQueryForm = query => {
-    this.setState({ query: query });
+  handleQueryForm = newValue => {
+    this.setState({ query: newValue });
   };
 
   render() {
@@ -19,7 +19,7 @@ export class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.handleQueryForm} />
-        <ImageGallery query={query} />
+        <ImageGallery newQuery={query} />
       </>
     );
   }

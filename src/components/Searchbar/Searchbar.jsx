@@ -4,13 +4,12 @@ export class Searchbar extends Component {
     query: '',
   };
   handleChange = event => {
-    const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
+    this.setState({ query: event.currentTarget.value.trim().toLowerCase() });
   };
   handleSubmit = event => {
     const { query } = this.state;
     event.preventDefault();
-    this.props.onSubmit(query.trim().toLowerCase());
+    this.props.onSubmit(query);
     this.reset();
   };
   reset = () => {
@@ -31,7 +30,6 @@ export class Searchbar extends Component {
             autocomplete="off"
             autofocus
             placeholder="Search images and photos"
-            name="query"
             value={query}
             onChange={this.handleChange}
           />

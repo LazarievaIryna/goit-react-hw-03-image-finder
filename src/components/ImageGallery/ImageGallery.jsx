@@ -7,16 +7,16 @@ export class ImageGallery extends Component {
     // query: '',
     images: [],
   };
-  componentDidUpdate(prevProps, prevState) {
-    const { newQuery } = this.props;
-    if (prevProps.newQuery !== newQuery) {
-      fetch(
-        `https://pixabay.com/api/?q=${newQuery}&page=1&key=29839947-203cd2765f14246beba1c6e54&image_type=photo&orientation=horizontal&per_page=12`
-      )
-        .then(response => response.json())
-        .then(data => this.setState({ images: data.hits }));
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   const { newQuery } = this.props;
+  //   if (prevProps.newQuery !== newQuery) {
+  //     fetch(
+  //       `https://pixabay.com/api/?q=${newQuery}&page=1&key=29839947-203cd2765f14246beba1c6e54&image_type=photo&orientation=horizontal&per_page=12`
+  //     )
+  //       .then(response => response.json())
+  //       .then(data => this.setState({ images: data.hits }));
+  //   }
+  // }
 
   render() {
     console.log(this.state);

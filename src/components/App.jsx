@@ -23,9 +23,9 @@ export class App extends Component {
       this.setState(prevState => {
         return {
           response: [...prevState.response, ...newFetch],
-          isLoading: false,
         };
       });
+      this.setState({ isLoading: false });
     }
   }
 
@@ -61,8 +61,8 @@ export class App extends Component {
               );
             })}
         </ImageGallery>
-        {response.length > 0 && <Button onLoad={this.loadMore} />}
         {isLoading && <Loader />}
+        {response.length > 0 && <Button onLoad={this.loadMore} />}
       </>
     );
   }

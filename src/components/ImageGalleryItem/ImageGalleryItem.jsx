@@ -1,11 +1,8 @@
-import { Component } from 'react';
-export class ImageGalleryItem extends Component {
-  render() {
-    const { img, alt } = this.props;
-    return (
-      <li className="ImageGalleryItem">
-        <img src={img} alt={alt} />
-      </li>
-    );
-  }
-}
+// import React from 'react';
+export const ImageGalleryItem = ({ url, alt }) => {
+  return (
+    <li className="ImageGalleryItem">
+      <img src={url} alt={alt} className="ImageGalleryItem-image" />
+    </li>
+  );
+};

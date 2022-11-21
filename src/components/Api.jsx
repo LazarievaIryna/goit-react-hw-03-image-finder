@@ -20,7 +20,8 @@ export const getFetch = async (request, page) => {
   const base_URL = `https://pixabay.com/api/?${params}`;
   try {
     const response = await axios.get(base_URL);
-    console.log(response.data);
+    return response.data.hits;
+    // console.log(response.data.hits);
   } catch (error) {
     return error;
   }

@@ -6,6 +6,7 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
+import Modal from './Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -13,6 +14,7 @@ export class App extends Component {
     page: 1,
     response: [],
     isLoading: false,
+    showModal: false,
   };
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
@@ -41,10 +43,16 @@ export class App extends Component {
   loadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
+  toogleModal = () => {
+    this.setState({ showModal: null });
+  };
+  onClickModal = (url, alt) => {
+    this.setState({ showModal: { url, alt } });
+  };
 
   render() {
     console.log(this.state);
-    const { response, isLoading } = this.state;
+    const { response, isLoading, showModal } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleQueryForm} />
@@ -57,12 +65,20 @@ export class App extends Component {
                   originalUrl={largeImageURL}
                   url={webformatURL}
                   alt={tags}
+                  onClick={this.onClickModal}
                 />
               );
             })}
         </ImageGallery>
         {isLoading && <Loader />}
         {response.length > 0 && <Button onLoad={this.loadMore} />}
+        {showModal && (
+          <Modal
+            onClose={this.toogleModal}
+            url={showModal.url}
+            alt={showModal.alt}
+          />
+        )}
       </>
     );
   }

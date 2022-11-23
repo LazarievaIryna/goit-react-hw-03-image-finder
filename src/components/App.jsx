@@ -1,5 +1,5 @@
 import { Component } from 'react';
-// import { ImageGallery } from './ImageGallery/ImageGallery';
+
 import { Searchbar } from './Searchbar/Searchbar';
 import { getFetch } from './Api';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -15,6 +15,8 @@ export class App extends Component {
     response: [],
     isLoading: false,
     showModal: false,
+    url: '',
+    tags: '',
   };
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
@@ -37,22 +39,21 @@ export class App extends Component {
     }
     this.setState({ query: newValue });
     console.log(newValue);
-    // getFetch(newValue);
   };
 
   loadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
-  toogleModal = () => {
-    this.setState({ showModal: null });
+  closeModal = () => {
+    this.setState({ showModal: false });
   };
   onClickModal = (url, alt) => {
-    this.setState({ showModal: { url, alt } });
+    this.setState({ showModal: true, url: url, tags: alt });
   };
 
   render() {
     console.log(this.state);
-    const { response, isLoading, showModal } = this.state;
+    const { response, isLoading, showModal, url, tags } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleQueryForm} />
@@ -72,13 +73,7 @@ export class App extends Component {
         </ImageGallery>
         {isLoading && <Loader />}
         {response.length > 0 && <Button onLoad={this.loadMore} />}
-        {showModal && (
-          <Modal
-            onClose={this.toogleModal}
-            url={showModal.url}
-            alt={showModal.alt}
-          />
-        )}
+        {showModal && <Modal onClose={this.closeModal} url={url} alt={tags} />}
       </>
     );
   }

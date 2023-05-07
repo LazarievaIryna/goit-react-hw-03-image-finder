@@ -5,7 +5,7 @@ export class Searchbar extends Component {
     query: '',
   };
   handleChange = event => {
-    console.log(event.currentTarget.value);
+    // console.log(event.currentTarget.value);
     const newQuery = event.currentTarget.value;
     this.setState({ query: newQuery });
   };

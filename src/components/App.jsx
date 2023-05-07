@@ -1,5 +1,5 @@
 import { Component } from 'react';
-
+// import { BsSearch } from "react-icons/bs";
 import { Searchbar } from './Searchbar/Searchbar';
 import { getFetch } from './Api';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -7,6 +7,7 @@ import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
 import Modal from './Modal/Modal';
+
 
 export class App extends Component {
   state = {
@@ -17,6 +18,7 @@ export class App extends Component {
     showModal: false,
     url: '',
     tags: '',
+    error: false,
   };
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
@@ -30,7 +32,11 @@ export class App extends Component {
         };
       });
       this.setState({ isLoading: false });
-    }
+      if (newFetch.length ===0){
+        this.setState({error: true})
+      }
+    } 
+    
   }
 
   handleQueryForm = newValue => {
@@ -38,7 +44,7 @@ export class App extends Component {
       this.setState({ response: [], query: newValue, page: 1 });
     }
     this.setState({ query: newValue });
-    console.log(newValue);
+    // console.log(newValue);
   };
 
   loadMore = () => {
@@ -52,11 +58,13 @@ export class App extends Component {
   };
 
   render() {
-    console.log(this.state);
-    const { response, isLoading, showModal, url, tags } = this.state;
+    // console.log(this.state);
+    const { response, isLoading, showModal, url, tags, error } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleQueryForm} />
+        {error && <p className="Error-message">
+No images for your request</p>}
         <ImageGallery>
           {response &&
             response.map(({ id, webformatURL, largeImageURL, tags }) => {

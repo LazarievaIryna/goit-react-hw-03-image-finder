@@ -25,7 +25,7 @@ export class App extends Component {
     if (prevState.query !== query || prevState.page !== page) {
       this.setState({ isLoading: true });
       const newFetch = await getFetch(query, page);
-      console.log(newFetch);
+      // console.log(newFetch);
       this.setState(prevState => {
         return {
           response: [...prevState.response, ...newFetch],

@@ -19,37 +19,33 @@ export class App extends Component {
     url: '',
     tags: '',
     error: false,
-    showButton: false,
-  };
-  async componentDidUpdate(prevProps, prevState) {
-    const { query, page} = this.state;
-
-    if (prevState.query !== query || prevState.page !== page) {
-      this.setState({ isLoading: true });
-
-      const newFetch = await getFetch(query, page);
-     
-      this.setState(prevState => {
-        return {
-          response: [...prevState.response, ...newFetch],
-        };
-      });
-      this.setState({ isLoading: false });
-      if (newFetch.length ===0){
-        this.setState({error: true, showButton: false})
-        
-      } 
-    } 
     
-  }
+  };
+  
 
   handleQueryForm = newValue => {
     if (this.state.query !== newValue) {
-      this.setState({ response: [], query: newValue, page: 1 });
+      this.setState({ response: [], query: newValue, page: 1, loadMore: false});
     }
     this.setState({ query: newValue });
     // console.log(newValue);
   };
+  componentDidUpdate(prevProps, prevState){
+    const {query, page}=this.state
+    if(prevState.query !== query || prevState.page !== page){
+this.getRequest()
+    }
+  }
+  getRequest=async()=>{
+    const {query, page}=this.state
+    this.setState({isLoading: true})
+    try{
+      const response = getFetch(query, page)
+      const newImages = response.hits;
+      const totalHits = response.totalHits;
+      
+    }
+  }
 
   loadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));

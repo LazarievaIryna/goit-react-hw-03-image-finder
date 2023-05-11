@@ -6,7 +6,7 @@ export const getFetch = async (request, page) => {
     q: request,
     image_type: 'photo',
     orientation: 'horizontal',
-    per_page: 12,
+    per_page: 100,
     page: page,
   });
   const base_URL = `https://pixabay.com/api/?${params}`;

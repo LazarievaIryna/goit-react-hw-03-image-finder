@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import { getFetch } from './Api';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
+// import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
 import Modal from './Modal/Modal';
@@ -19,6 +19,8 @@ export class App extends Component {
     url: '',
     tags: '',
     error: false,
+    isEmpty: false,
+    showButton: false,
     
   };
   
@@ -40,10 +42,22 @@ this.getRequest()
     const {query, page}=this.state
     this.setState({isLoading: true})
     try{
-      const response = getFetch(query, page)
+      const response = await getFetch(query, page)
       const newImages = response.hits;
       const totalHits = response.totalHits;
-      
+      if(totalHits === 0){
+        this.setState({isEmpty:true})
+        return
+      }
+      this.setState(state=>({
+        response: [...state.response, ...newImages], isEmpty: false, showButton: page< Math.ceil(totalHits/100)
+      }))
+    }
+    catch(error){
+      this.setState({error: true})
+    }
+    finally{
+      this.setState({isLoading:false})
     }
   }
 
@@ -59,7 +73,7 @@ this.getRequest()
 
   render() {
     
-    const { response, isLoading, showModal, url, tags, error, showButton } = this.state;
+    const { response, isLoading, showModal, url, tags, error, isEmpty, showButton } = this.state;
     console.log(response);
 
     
@@ -67,22 +81,10 @@ this.getRequest()
     return (
       <>
         <Searchbar onSubmit={this.handleQueryForm} />
+        {isEmpty && <p>No image</p>}
         {error && <p className="Error-message">
 No images for your request</p>}
-        <ImageGallery>
-          {response &&
-            response.map(({ id, webformatURL, largeImageURL, tags }) => {
-              return (
-                <ImageGalleryItem
-                  key={id}
-                  originalUrl={largeImageURL}
-                  url={webformatURL}
-                  alt={tags}
-                  onClick={this.onClickModal}
-                />
-              );
-            })}
-        </ImageGallery>
+        {response.length >0 && <ImageGallery images={response} onClick={this.onClickModal}/>}
         {isLoading && <Loader />}
         {showButton && <Button onLoad={this.loadMore} />}
         {showModal && <Modal onClose={this.closeModal} url={url} alt={tags} />}

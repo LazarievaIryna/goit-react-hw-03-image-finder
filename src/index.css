@@ -235,3 +235,8 @@ img {
   margin-right: auto;
   display: table;
 }
+.No-image{
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -20,7 +20,8 @@ export class App extends Component {
     tags: '',
     error: false,
     isEmpty: false,
-    showButton: false,
+    
+    total:1,
     
   };
   
@@ -50,7 +51,7 @@ this.getRequest()
         return
       }
       this.setState(state=>({
-        response: [...state.response, ...newImages], isEmpty: false, showButton: page< Math.ceil(totalHits/100)
+        response: [...state.response, ...newImages], isEmpty: false, total: totalHits
       }))
     }
     catch(error){
@@ -73,7 +74,7 @@ this.getRequest()
 
   render() {
     
-    const { response, isLoading, showModal, url, tags, error, isEmpty, showButton } = this.state;
+    const { response, isLoading, showModal, url, tags, error, isEmpty, total, page } = this.state;
     console.log(response);
 
     
@@ -81,12 +82,12 @@ this.getRequest()
     return (
       <>
         <Searchbar onSubmit={this.handleQueryForm} />
-        {isEmpty && <p>No image</p>}
+        {!isLoading && isEmpty && <p className='No-image'>No image</p>}
         {error && <p className="Error-message">
 No images for your request</p>}
         {response.length >0 && <ImageGallery images={response} onClick={this.onClickModal}/>}
         {isLoading && <Loader />}
-        {showButton && <Button onLoad={this.loadMore} />}
+        {!isLoading && total/12 > page && <Button onLoad={this.loadMore} />}
         {showModal && <Modal onClose={this.closeModal} url={url} alt={tags} />}
       </>
     );

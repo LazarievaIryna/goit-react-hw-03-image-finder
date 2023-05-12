@@ -75,7 +75,7 @@ this.getRequest()
   render() {
     
     const { response, isLoading, showModal, url, tags, error, isEmpty, total, page } = this.state;
-    console.log(response);
+    // console.log(response);
 
     
     
